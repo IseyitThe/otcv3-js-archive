@@ -1,0 +1,1 @@
+Cheat.PrintColor([150,0,250,255], "Welcome to WokeNN'S JS [>.<] \n");

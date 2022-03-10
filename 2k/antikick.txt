@@ -1,0 +1,27 @@
+var next_time = Global.Realtime( );
+var flip = false;
+var slider = UI.AddSliderFloat( "Breathing time", 0.5, 2.5 );
+UI.SetValue.apply( this, slider, 1.5 );
+
+function on_draw( ) {
+    var val = UI.GetValue.apply( this, slider );
+    
+    var curtime = Global.Realtime( );
+    if( curtime > next_time ) {
+        next_time = curtime + val;
+        flip = !flip;
+    }
+    
+    var delta = ( next_time - curtime ) / val;
+    if( !flip )
+        delta = 1.0 - delta;
+    
+    var string = flip ? "ebana rot" : "mnogo ebana rot";
+    var col = [ 255, 200 * delta, 200 * delta, 255 ];
+    
+    var screen = Global.GetScreenSize( );
+    
+    Render.String( screen[ 0 ] / 2, 200, 1, string, col, 48 );
+}
+
+Global.RegisterCallback( "Draw", "on_draw" );

@@ -1,0 +1,36 @@
+var hittime = 0;
+var FREESTAND = false;
+
+function OnHurt()
+{
+if (Entity.GetEntityFromUserID(Event.GetInt("userid")) !== Entity.GetLocalPlayer()) return;
+var hitbox = Event.GetInt('hitgroup');
+
+if (hitbox == 1 || hitbox == 6 || hitbox == 7)
+{
+hittime = Global.Curtime();
+}
+}
+
+function Freestanding()
+{
+if (!UI.GetValue("Misc", "JAVASCRIPT", "Script Items", "Freestand On Hit"))
+return;
+
+FREESTAND = false;
+
+if ((hittime + UI.GetValue("Misc", "JAVASCRIPT", "Script Items", "Freestand Duration") > Global.Curtime()))
+FREESTAND = true;
+
+UI.SetValue("Anti-Aim", "Rage Anti-Aim", "Auto direction", FREESTAND);
+}
+
+function main()
+{
+UI.AddCheckbox("Freestand On Hit");
+UI.AddSliderFloat("Freestand Duration", 0, 5);
+
+Cheat.RegisterCallback("player_hurt", "OnHurt");
+Cheat.RegisterCallback("Draw", "Freestanding");
+}
+main()
